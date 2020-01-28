@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>seher_support</name>
+  <version>0.1.0</version>
+  <description>The seher_support package</description>
+
+  <maintainer email="aulon@todo.todo">aulon</maintainer>
+  <license>Apache 2.0</license>
+  <!-- <author email="jane.doe@example.com">Jane Doe</author> -->
+
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>roscpp</depend>
+  <depend>std_msgs</depend>
+  <depend>tf</depend>
+  <depend>tf_conversions</depend>
+  <depend>geometry_msgs</depend>
+
+  <export>
+  </export>
+</package>
