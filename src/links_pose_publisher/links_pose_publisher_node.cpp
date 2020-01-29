@@ -13,7 +13,9 @@ int main(int argc, char **argv)
 
   ros::Rate loop_rate(10);
 
+  lpp.setReferencerame("world");
   lpp.getAllTfs();
+
 
   return 0;
 }
