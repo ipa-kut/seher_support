@@ -6,18 +6,27 @@ add_compile_options(-std=c++11)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
-  std_msgs
   tf
-  tf_conversions
   geometry_msgs
+  message_generation
 )
 
+add_message_files(
+  FILES
+  PoseStampedArray.msg
+)
+
+generate_messages(
+  DEPENDENCIES
+  geometry_msgs
+)
 
 catkin_package(
   INCLUDE_DIRS
     include
   CATKIN_DEPENDS
     roscpp
+    message_runtime
 )
 
 

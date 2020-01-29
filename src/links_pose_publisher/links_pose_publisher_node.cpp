@@ -7,15 +7,8 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "link_pose_publisher_node");
   ros::NodeHandle nh;
 
-  LinksPosePublisher lpp;
-
-  ros::Publisher chatter_pub = nh.advertise<std_msgs::String>("chatter", 1000);
-
-  ros::Rate loop_rate(10);
-
-  lpp.setReferencerame("world");
-  lpp.getAllTfs();
-
+  LinksPosePublisher lpp(nh, "world", 100);
+  lpp.publishAllPoses();
 
   return 0;
 }

@@ -1,8 +1,12 @@
 #include "links_pose_publisher/links_pose_publisher.hpp"
 
-LinksPosePublisher::LinksPosePublisher()
+
+LinksPosePublisher::LinksPosePublisher(ros::NodeHandle nh, std::string reference_frame, short frequency):
+  nh(nh),
+  reference_frame(reference_frame),
+  loop_rate_(frequency)
 {
-  reference_frame="world";
+  pub_poses = this->nh.advertise<seher_support::PoseStampedArray>("links_poses", 1000);
 }
 
 LinksPosePublisher::~LinksPosePublisher()
@@ -10,25 +14,26 @@ LinksPosePublisher::~LinksPosePublisher()
 
 }
 
-void LinksPosePublisher::print_hello()
+seher_support::PoseStampedArray LinksPosePublisher::getAllPoses()
 {
-  ROS_INFO("Hello");
-}
+  seher_support::PoseStampedArray msg;
 
-void LinksPosePublisher::getAllTfs()
-{
-  std::vector<geometry_msgs::PoseStamped> poses;
   for(std::string link : links)
   {
-    poses.push_back(getPoseOfLink(link));
+    msg.stamped_poses.push_back(getPoseOfLink(link));
   }
 
-
+  return msg;
 }
 
 void LinksPosePublisher::setReferencerame(std::string frame_name)
 {
   reference_frame = frame_name;
+}
+
+void LinksPosePublisher::setLoop_rate(const short hz)
+{
+  loop_rate_ = ros::Rate(hz);
 }
 
 geometry_msgs::PoseStamped LinksPosePublisher::getPoseOfLink(std::string source_link)
@@ -54,6 +59,7 @@ geometry_msgs::PoseStamped LinksPosePublisher::getPoseOfLink(std::string source_
 //                    << " parent_frame_id: " << transform.frame_id_
 //                    << " child_id: " << transform.child_frame_id_
 //                    ) ;
+    pose_link.header.seq = seq;
     pose_link.header.stamp = ros::Time::now();
     pose_link.header.frame_id = source_link;
     pose_link.pose.position.x = transform.getOrigin().getX();
@@ -68,8 +74,23 @@ geometry_msgs::PoseStamped LinksPosePublisher::getPoseOfLink(std::string source_
   {
     ROS_ERROR_STREAM("Could not find transform for " << source_link << " within " << tf_lookup_timeout << "s! Returning empty pose.");
   }
-  ROS_INFO_STREAM("Returnting pose :" << pose_link);
+//  ROS_INFO_STREAM("Returning pose :" << pose_link);
   return pose_link;
 
+}
+
+void LinksPosePublisher::publishAllPoses()
+{
+  while(ros::ok())
+  {
+    publishAllPosesOnce();
+    loop_rate_.sleep();
+  }
+}
+
+void LinksPosePublisher::publishAllPosesOnce()
+{
+  pub_poses.publish(getAllPoses());
+  seq++;
 }
 
