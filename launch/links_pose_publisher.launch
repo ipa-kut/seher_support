@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+ <arg name="reference_frame" default="world" />
+ <arg name="rate" default="25" />
+ <node name="links_pose_publisher" pkg="seher_support" type="links_pose_publisher" respawn="false" output="screen" args="$(arg reference_frame) $(arg rate)"/>
+</launch>

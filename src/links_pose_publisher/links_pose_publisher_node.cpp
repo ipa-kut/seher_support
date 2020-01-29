@@ -7,7 +7,7 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "link_pose_publisher_node");
   ros::NodeHandle nh;
 
-  LinksPosePublisher lpp(nh, "world", 100);
+  LinksPosePublisher lpp(nh, argv[1], std::stoi(argv[2]) ) ;
   lpp.publishAllPoses();
 
   return 0;

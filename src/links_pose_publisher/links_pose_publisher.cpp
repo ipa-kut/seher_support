@@ -6,6 +6,7 @@ LinksPosePublisher::LinksPosePublisher(ros::NodeHandle nh, std::string reference
   reference_frame(reference_frame),
   loop_rate_(frequency)
 {
+  ROS_INFO_STREAM("Starting publisher with reference frame " << reference_frame << " @ " << frequency <<"Hz.");
   pub_poses = this->nh.advertise<seher_support::PoseStampedArray>("links_poses", 1000);
 }
 
@@ -52,7 +53,8 @@ geometry_msgs::PoseStamped LinksPosePublisher::getPoseOfLink(std::string source_
   }
   if(transform.child_frame_id_ == source_link)
   {
-//    ROS_INFO_STREAM("Found tf. Trans : " << transform.getOrigin().getX() << " " << transform.getOrigin().getY() << " " << transform.getOrigin().getZ()
+//    ROS_INFO_STREAM("Found tf. Trans : "
+//                    << transform.getOrigin().getX() << " " << transform.getOrigin().getY() << " " << transform.getOrigin().getZ()
 //                    << " Orient: "  << transform.getRotation().getX() << " " << transform.getRotation().getY()
 //                    << " " << transform.getRotation().getZ() << " " << transform.getRotation().getW()
 //                    << " stamp : " << transform.stamp_

@@ -8,7 +8,7 @@
 class LinksPosePublisher
 {
 public:
-  LinksPosePublisher(ros::NodeHandle nh, std::string reference_frame = "world", short frequency = 25);
+  LinksPosePublisher(ros::NodeHandle nh, std::string reference_frame, short frequency);
   ~LinksPosePublisher();
 
   geometry_msgs::PoseStamped getPoseOfLink(std::string source_link);
